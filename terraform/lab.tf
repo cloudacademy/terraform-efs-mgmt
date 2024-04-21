@@ -8,13 +8,6 @@ data "aws_key_pair" "lab" {
   key_name = data.aws_caller_identity.current.id
 }
 
-### Resources
-
-resource "aws_iam_access_key" "student" {
-  user   = "student"
-  status = "Active"
-}
-
 # LOCALS
 #====================================
 
