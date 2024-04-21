@@ -5,8 +5,7 @@ data "aws_region" "current" {}
 data "aws_availability_zones" "available" {}
 
 data "aws_key_pair" "lab" {
-  #key_name = data.aws_caller_identity.current.id ####### NEEDS TO BE CHANGED!!!!!!
-  key_name = "cloudacademydemo23-v2"
+  key_name = data.aws_caller_identity.current.id
 }
 
 ### Resources
