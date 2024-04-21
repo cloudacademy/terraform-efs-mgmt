@@ -125,58 +125,12 @@ resource "aws_security_group" "efs_sg" {
   }
 }
 
-# IAM
-#====================================
-
-resource "aws_iam_role" "instance" {
-  name = "instance"
-  path = "/"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
-
-  inline_policy {
-    name = "instance_policy"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "cloudwatch:PutMetricData"
-          ]
-          Resource = "*"
-        },
-        {
-          Effect = "Allow"
-          Action = [
-            "ec2:Describe*",
-            "ec2messages:*",
-            "ssm:*"
-          ]
-          Resource = "*"
-        }
-      ]
-    })
-  }
-}
-
-resource "aws_iam_instance_profile" "instance" {
-  role = aws_iam_role.instance.name
-}
-
 # EC2
 #====================================
+
+resource "aws_iam_instance_profile" "instance" {
+  role = "ec2-labinstance-role"
+}
 
 resource "aws_instance" "instance_1" {
   ami                         = "ami-035bf26fb18e75d1b"
