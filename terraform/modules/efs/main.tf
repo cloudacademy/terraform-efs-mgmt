@@ -13,6 +13,8 @@ resource "aws_efs_file_system" "file_system" {
 }
 
 resource "aws_efs_access_point" "access_point" {
+  count = var.posix_access_point_config == {} || var.root_access_point_config == {} ? 0 : 1
+
   file_system_id = aws_efs_file_system.file_system.id
 
   root_directory {

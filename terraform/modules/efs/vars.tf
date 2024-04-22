@@ -23,17 +23,19 @@ variable "CORE_BACKUPS_RETENTION" {
 variable "posix_access_point_config" {
   description = "The configuration for the POSIX access point"
   type = object({
-    posix_user_gid = string
-    posix_user_uid = string
+    posix_user_gid = optional(string)
+    posix_user_uid = optional(string)
   })
+  default = {}
 }
 
 variable "root_access_point_config" {
   description = "The configuration for the root access point"
   type = object({
-    path        = string
-    owner_gid   = string
-    owner_uid   = string
-    permissions = string
+    path        = optional(string)
+    owner_gid   = optional(string)
+    owner_uid   = optional(string)
+    permissions = optional(string)
   })
+  default = {}
 }
