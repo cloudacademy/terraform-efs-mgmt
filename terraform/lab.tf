@@ -61,6 +61,12 @@ module "vpc" {
   }
 }
 
+resource "aws_efs_mount_target" "efs_mount_target" {
+  file_system_id  = module.efs.file_system_id
+  subnet_id       = module.vpc.private_subnets[0]
+  security_groups = [aws_security_group.efs_sg.id]
+}
+
 # SGs
 #====================================
 
@@ -143,7 +149,7 @@ resource "aws_instance" "instance_1" {
   }
 
   depends_on = [
-    module.efs.file_system
+    aws_efs_mount_target.efs_mount_target
   ]
 }
 
@@ -165,6 +171,6 @@ resource "aws_instance" "instance_2" {
   }
 
   depends_on = [
-    module.efs.file_system
+    aws_efs_mount_target.efs_mount_target
   ]
 }
