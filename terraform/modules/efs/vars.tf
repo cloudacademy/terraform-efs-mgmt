@@ -39,3 +39,13 @@ variable "root_access_point_config" {
   })
   default = null
 }
+
+variable "lifecycle_policy" {
+  description = "The configuration for the EFS lifecycle policy"
+  type = object({
+    transition_to_archive               = optional(string)
+    transition_to_ia                    = optional(string)
+    transition_to_primary_storage_class = optional(string)
+  })
+  default = null
+}

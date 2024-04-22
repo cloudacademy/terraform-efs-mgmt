@@ -3,9 +3,23 @@ resource "aws_efs_file_system" "file_system" {
   kms_key_id       = var.kms_key_arn
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
-  lifecycle_policy {
-    transition_to_ia = "AFTER_30_DAYS"
+
+  dynamic "lifecycle_policy" {
+    for_each = var.lifecycle_policy == null ? [] : [1]
+
+    content {
+      transition_to_ia = var.lifecycle_policy.transition_to_ia != null ? var.lifecycle_policy.transition_to_ia : null
+    }
   }
+
+  dynamic "lifecycle_policy" {
+    for_each = var.lifecycle_policy == null ? [] : [1]
+
+    content {
+      transition_to_primary_storage_class = var.lifecycle_policy.transition_to_primary_storage_class != null ? var.lifecycle_policy.transition_to_primary_storage_class : null
+    }
+  }
+
   tags = {
     Name   = "efs-fs1"
     Backup = var.CORE_BACKUPS_RETENTION

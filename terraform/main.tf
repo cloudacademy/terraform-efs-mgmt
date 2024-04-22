@@ -28,4 +28,10 @@ module "efs" {
     owner_uid   = "1001"
     permissions = "750"
   }
+
+  lifecycle_policy = {
+    # transition_to_archive = "AFTER_1_DAY"
+    transition_to_ia                    = "AFTER_30_DAYS"
+    transition_to_primary_storage_class = "AFTER_1_ACCESS"
+  }
 }
