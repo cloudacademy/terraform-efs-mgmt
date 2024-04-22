@@ -62,8 +62,9 @@ module "vpc" {
 }
 
 resource "aws_efs_mount_target" "efs_mount_target" {
+  count           = length(local.azs)
   file_system_id  = module.efs.file_system_id
-  subnet_id       = module.vpc.private_subnets[0]
+  subnet_id       = element(module.vpc.private_subnets, count.index)
   security_groups = [aws_security_group.efs_sg.id]
 }
 
@@ -158,7 +159,7 @@ resource "aws_instance" "instance_2" {
   instance_type               = "t3.micro"
   key_name                    = data.aws_key_pair.lab.key_name
   vpc_security_group_ids      = [aws_security_group.instance_sg.id]
-  subnet_id                   = module.vpc.public_subnets[0]
+  subnet_id                   = module.vpc.public_subnets[1]
   iam_instance_profile        = aws_iam_instance_profile.instance.name
   associate_public_ip_address = true
 
