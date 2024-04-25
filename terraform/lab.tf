@@ -138,7 +138,7 @@ resource "aws_instance" "instances" {
   instance_type               = "t3.micro"
   key_name                    = data.aws_key_pair.lab.key_name
   vpc_security_group_ids      = [aws_security_group.instance_sg.id]
-  subnet_id                   = element(module.vpc.public_subnets.*.id, count.index)
+  subnet_id                   = element(module.vpc.public_subnets, count.index)
   iam_instance_profile        = aws_iam_instance_profile.instance.name
   associate_public_ip_address = true
 
