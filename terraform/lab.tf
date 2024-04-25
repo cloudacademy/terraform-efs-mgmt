@@ -146,6 +146,11 @@ resource "aws_instance" "instances" {
     cpu_credits = "standard"
   }
 
+  user_data = <<EOF
+#!/bin/bash
+hostnamectl set-hostname instance_0${count.index + 1}
+EOF
+
   tags = {
     "Name" = "instance_0${count.index + 1}"
   }
