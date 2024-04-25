@@ -132,12 +132,13 @@ resource "aws_iam_instance_profile" "instance" {
   role = "ec2-labinstance-role"
 }
 
-resource "aws_instance" "instance_1" {
+resource "aws_instance" "instances" {
+  count                       = length(local.azs)
   ami                         = "ami-035bf26fb18e75d1b"
   instance_type               = "t3.micro"
   key_name                    = data.aws_key_pair.lab.key_name
   vpc_security_group_ids      = [aws_security_group.instance_sg.id]
-  subnet_id                   = module.vpc.public_subnets[0]
+  subnet_id                   = element(module.vpc.public_subnets.*.id, count.index)
   iam_instance_profile        = aws_iam_instance_profile.instance.name
   associate_public_ip_address = true
 
@@ -146,29 +147,7 @@ resource "aws_instance" "instance_1" {
   }
 
   tags = {
-    "Name" = "instance_01"
-  }
-
-  depends_on = [
-    aws_efs_mount_target.efs_mount_target
-  ]
-}
-
-resource "aws_instance" "instance_2" {
-  ami                         = "ami-035bf26fb18e75d1b"
-  instance_type               = "t3.micro"
-  key_name                    = data.aws_key_pair.lab.key_name
-  vpc_security_group_ids      = [aws_security_group.instance_sg.id]
-  subnet_id                   = module.vpc.public_subnets[1]
-  iam_instance_profile        = aws_iam_instance_profile.instance.name
-  associate_public_ip_address = true
-
-  credit_specification {
-    cpu_credits = "standard"
-  }
-
-  tags = {
-    "Name" = "instance_02"
+    "Name" = "instance_0${count.index + 1}"
   }
 
   depends_on = [
