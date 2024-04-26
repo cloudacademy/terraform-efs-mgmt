@@ -154,8 +154,4 @@ EOF
   tags = {
     "Name" = "instance-0${count.index + 1}"
   }
-
-  depends_on = [
-    aws_efs_mount_target.efs_mount_target
-  ]
 }
