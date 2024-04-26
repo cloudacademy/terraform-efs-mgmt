@@ -148,11 +148,11 @@ resource "aws_instance" "instances" {
 
   user_data = <<EOF
 #!/bin/bash
-hostnamectl set-hostname instance_0${count.index + 1}
+hostnamectl set-hostname instance-0${count.index + 1}
 EOF
 
   tags = {
-    "Name" = "instance_0${count.index + 1}"
+    "Name" = "instance-0${count.index + 1}"
   }
 
   depends_on = [
