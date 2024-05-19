@@ -14,7 +14,7 @@ variable "aws_account_id" {
 
 }
 
-variable "CORE_BACKUPS_RETENTION" {
+variable "core_backups_retention" {
   description = "The retention policy for backups"
   type        = string
   default     = "NOBACKUP"

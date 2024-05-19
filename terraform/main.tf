@@ -14,7 +14,7 @@ module "efs" {
 
   kms_key_arn            = module.kms.kms_key_arn
   aws_account_id         = var.aws_account_id
-  CORE_BACKUPS_RETENTION = "NOBACKUP"
+  core_backups_retention = "NOBACKUP"
 
   # Access Points Settings
   posix_access_point_config = {
