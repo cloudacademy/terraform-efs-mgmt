@@ -26,6 +26,31 @@ resource "aws_efs_file_system" "file_system" {
   }
 }
 
+data "aws_iam_policy_document" "policy" {
+  statement {
+    sid    = "DenyInsecureTransport"
+    effect = "Deny"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:ClientWrite",
+    ]
+
+    resources = [aws_efs_file_system.file_system.arn]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
 resource "aws_efs_access_point" "access_point" {
   count = var.posix_access_point_config == null || var.root_access_point_config == null ? 0 : 1
 
