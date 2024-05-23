@@ -26,34 +26,45 @@ resource "aws_efs_file_system" "file_system" {
   }
 }
 
-data "aws_iam_policy_document" "tls_policy" {
-  statement {
-    sid    = "DenyInsecureTransport"
-    effect = "Deny"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "elasticfilesystem:ClientMount",
-      "elasticfilesystem:ClientWrite",
-    ]
-
-    resources = [aws_efs_file_system.file_system.arn]
-
-    condition {
-      test     = "Bool"
-      variable = "aws:SecureTransport"
-      values   = ["false"]
-    }
-  }
-}
-
 resource "aws_efs_file_system_policy" "tls_policy" {
   file_system_id = aws_efs_file_system.file_system.id
-  policy         = data.aws_iam_policy_document.tls_policy.json
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          "AWS" : "*"
+        }
+        Action = [
+          "elasticfilesystem:ClientRootAccess",
+          "elasticfilesystem:ClientWrite",
+          "elasticfilesystem:ClientMount"
+        ]
+        Resource = aws_efs_file_system.file_system.arn
+        Condition = {
+          "Bool" = {
+            "elasticfilesystem:AccessedViaMountTarget" = "true"
+          }
+        }
+      },
+      {
+        Effect = "Deny"
+        Principal = {
+          "AWS" : "*"
+        }
+        Action = [
+          "*"
+        ]
+        Resource = aws_efs_file_system.file_system.arn
+        Condition = {
+          "Bool" = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      }
+    ]
+  })
 }
 
 resource "aws_efs_access_point" "access_point" {
