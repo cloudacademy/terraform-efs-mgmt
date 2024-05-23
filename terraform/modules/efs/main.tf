@@ -20,9 +20,8 @@ resource "aws_efs_file_system" "file_system" {
     }
   }
 
-  tags = {
-    Name                   = "efs-fs1"
-    CORE_BACKUPS_RETENTION = var.core_backups_retention
+  tags = { #TAGS GO HERE
+    Name = "efs-fs1"
   }
 }
 
