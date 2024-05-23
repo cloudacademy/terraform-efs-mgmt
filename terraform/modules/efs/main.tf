@@ -20,7 +20,8 @@ resource "aws_efs_file_system" "file_system" {
     }
   }
 
-  tags = { #TAGS GO HERE
+  #EFS TAGS HERE
+  tags = {
     Name = "efs-fs1"
   }
 }

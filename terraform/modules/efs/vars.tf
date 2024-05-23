@@ -20,6 +20,12 @@ variable "core_backups_retention" {
   default     = "NOBACKUP"
 }
 
+variable "core_backups_retention_pitr" {
+  description = "The retention PITR policy for backups"
+  type        = string
+  default     = "NOBACKUP"
+}
+
 variable "posix_access_point_config" {
   description = "The configuration for the POSIX access point"
   type = object({
