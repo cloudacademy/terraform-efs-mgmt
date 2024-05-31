@@ -109,4 +109,8 @@ resource "aws_security_group" "customer_managed" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+
+  tags = {
+    Name = "customer-managed-efs-sg"
+  }
 }
