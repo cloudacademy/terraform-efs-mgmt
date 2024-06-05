@@ -111,6 +111,6 @@ resource "aws_security_group" "customer_managed" {
   }
 
   tags = {
-    Name = "customer-managed-efs-sg"
+    Name = "customer-managed"
   }
 }
